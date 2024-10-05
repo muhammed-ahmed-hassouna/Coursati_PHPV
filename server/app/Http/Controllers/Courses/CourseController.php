@@ -22,35 +22,50 @@ class CourseController extends Controller
         }
     }
 
-    function getCourseByTeacherId()
+    function getCourseByTeacherId($id)
     {
         try {
-           
+            if (!$id) {
+                return response()->json(['error' => 'Teacher ID is required'], 400);
+            }
+
+            $courses = Courses::getCourseByTeacherId($id);
+            return response()->json(['data' => $courses], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
         }
     }
 
-    function addCourse(Request $req)
+    function createCourse(Request $req)
     {
         try {
             $user = Auth::user();
             $validatedData = $req->validate([
-                'course_name' => 'required|string|max:255', 
-                'description' => 'required|string|max:1000', 
-                'startDate' => 'required|timestamp', 
-                'endDate' => 'required|timestamp|after:startDate', 
-                'image' => 'required|string', 
+                'course_name' => 'required|string|max:255',
+                'description' => 'required|string|max:1000',
+                'startDate' => 'required|date',
+                'endDate' => 'required|date|after:startDate',
+                'image' => 'required|string',
                 'video' => 'required|string',
             ]);
             $validatedData['teacher_id'] = $user->id;
-            
-            $course = Courses::addCourse($validatedData);
+
+            $course = Courses::createCourse($validatedData);
             return response()->json(['data' => $course], 201);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
         }
     }
+
+    function test()
+    {
+        try {
+        } catch (Exception $e) {
+            Log::error('Exception: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+        }
+    }
 }
+

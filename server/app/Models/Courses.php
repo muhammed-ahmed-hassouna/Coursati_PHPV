@@ -32,16 +32,17 @@ class Courses extends Model
         }
     }
 
-    protected static function getCourseByTeacherId()
+    protected static function getCourseByTeacherId($id)
     {
         try {
-            return ;
+
+            return self::where('teacher_id', $id)->get();
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    protected static function addCourse($course)
+    protected static function createCourse($course)
     {
         try {
             return self::create($course);
