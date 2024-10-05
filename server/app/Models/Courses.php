@@ -66,6 +66,11 @@ class Courses extends Model
 
         return $course;
     }
+
+    protected static function softDeleteCourse($course)
+    {
+        return $course->delete();;
+    }
     
     protected static function test()
     {

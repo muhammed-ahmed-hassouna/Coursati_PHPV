@@ -14,7 +14,7 @@ Route::prefix('course')->middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['role:Teacher'])->group(function () {
         Route::post('/createCourse', [CourseController::class, 'createCourse']);
         Route::patch('/updateCourse/{id}', [CourseController::class, 'updateCourse']);
-        Route::put('/softDeleteCourse', [CourseController::class, 'softDeleteCourse']);
+        Route::delete('/DeleteCourse/{id}', [CourseController::class, 'softDeleteCourse']);
         Route::post('/uploadFile', [CourseController::class, 'uploadFile']);
     });
 });

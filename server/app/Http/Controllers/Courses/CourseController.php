@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
+    // Todo : Add if !value for each function
+
     function getAllCourses()
     {
         try {
@@ -59,7 +61,7 @@ class CourseController extends Controller
         }
     }
 
-    function updateCourse(Request $req, $courseID)
+    function updateCourse(Request $req, $courseId)
     {
         try {
             $validatedData = $req->validate([
@@ -71,11 +73,26 @@ class CourseController extends Controller
                 'video' => 'sometimes |string',
             ]);
 
-            $course = Courses::findCourseById($courseID);
+            $course = Courses::findCourseById($courseId);
             
             $updatedCourse = Courses::updateCourse($validatedData, $course);
            
             return response()->json(['data' => $updatedCourse], 200);
+        } catch (Exception $e) {
+            Log::error('Exception: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function softDeleteCourse($courseId)
+    {
+        try {
+            $course = Courses::findCourseById($courseId);
+
+            Courses::softDeleteCourse($course);
+
+            return response()->json(['message' => 'Course soft deleted successfully with id '. $course->id], 200);
+
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
