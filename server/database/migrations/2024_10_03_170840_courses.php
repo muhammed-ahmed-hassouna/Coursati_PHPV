@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('course_name');
             $table->string('description');
-            $table->unsignedBigInteger('teacher_id');
+            $table->unsignedBigInteger('teacher_id')->index();
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('startDate')->nullable();;
             $table->timestamp('endDate')->nullable();;
