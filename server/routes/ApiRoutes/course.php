@@ -13,7 +13,7 @@ Route::prefix('course')->middleware(['auth:sanctum'])->group(function () {
     // Routes for Teachers
     Route::middleware(['role:Teacher'])->group(function () {
         Route::post('/createCourse', [CourseController::class, 'createCourse']);
-        Route::patch('/updateCourse', [CourseController::class, 'updateCourse']);
+        Route::patch('/updateCourse/{id}', [CourseController::class, 'updateCourse']);
         Route::put('/softDeleteCourse', [CourseController::class, 'softDeleteCourse']);
         Route::post('/uploadFile', [CourseController::class, 'uploadFile']);
     });

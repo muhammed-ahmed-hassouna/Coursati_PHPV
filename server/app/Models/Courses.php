@@ -35,7 +35,6 @@ class Courses extends Model
     protected static function getCourseByTeacherId($id)
     {
         try {
-
             return self::where('teacher_id', $id)->get();
         } catch (Exception $e) {
             throw $e;
@@ -46,6 +45,32 @@ class Courses extends Model
     {
         try {
             return self::create($course);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    // Utility Function for separation
+    protected static function findCourseById($id)
+    {
+        try {
+            return self::findOrFail($id);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    protected static function updateCourse($validatedData, $course)
+    {
+        $course->update($validatedData);
+
+        return $course;
+    }
+    
+    protected static function test()
+    {
+        try {
+            return;
         } catch (Exception $e) {
             throw $e;
         }

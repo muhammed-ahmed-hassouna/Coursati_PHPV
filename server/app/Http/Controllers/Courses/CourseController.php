@@ -59,6 +59,29 @@ class CourseController extends Controller
         }
     }
 
+    function updateCourse(Request $req, $courseID)
+    {
+        try {
+            $validatedData = $req->validate([
+                'course_name' => 'sometimes |string|max:255',
+                'description' => 'sometimes |string|max:1000',
+                'startDate' => 'sometimes |date',
+                'endDate' => 'sometimes |date|after:startDate',
+                'image' => 'sometimes |string',
+                'video' => 'sometimes |string',
+            ]);
+
+            $course = Courses::findCourseById($courseID);
+            
+            $updatedCourse = Courses::updateCourse($validatedData, $course);
+           
+            return response()->json(['data' => $updatedCourse], 200);
+        } catch (Exception $e) {
+            Log::error('Exception: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
     function test()
     {
         try {
@@ -68,4 +91,3 @@ class CourseController extends Controller
         }
     }
 }
-
