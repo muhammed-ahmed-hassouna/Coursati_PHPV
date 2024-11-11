@@ -7,7 +7,9 @@ use App\Models\Courses;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class CourseController extends Controller
 {
@@ -16,7 +18,14 @@ class CourseController extends Controller
     function getAllCourses()
     {
         try {
-            $courses = Courses::getAllCourses();
+            $courses = Cache::remember('all_courses', 60, function () {
+                return Courses::with(['teacher' => function ($query) {
+                    $query->select('id', 'username'); 
+                }])->get()->toArray();
+            });
+
+            Cache::store('redis')->put('test_key', 'test_value', 3600);
+
             return response()->json(['data' => $courses], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
@@ -65,18 +74,18 @@ class CourseController extends Controller
     {
         try {
             $validatedData = $req->validate([
-                'course_name' => 'sometimes |string|max:255',
-                'description' => 'sometimes |string|max:1000',
-                'startDate' => 'sometimes |date',
-                'endDate' => 'sometimes |date|after:startDate',
-                'image' => 'sometimes |string',
-                'video' => 'sometimes |string',
+                'course_name' => 'string|max:255',
+                'description' => 'string|max:1000',
+                'startDate' => 'date',
+                'endDate' => 'date|after:startDate',
+                'image' => 'string',
+                'video' => 'string',
             ]);
 
             $course = Courses::findCourseById($courseId);
-            
+
             $updatedCourse = Courses::updateCourse($validatedData, $course);
-           
+
             return response()->json(['data' => $updatedCourse], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
@@ -91,17 +100,7 @@ class CourseController extends Controller
 
             Courses::softDeleteCourse($course);
 
-            return response()->json(['message' => 'Course soft deleted successfully with id '. $course->id], 200);
-
-        } catch (Exception $e) {
-            Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    function test()
-    {
-        try {
+            return response()->json(['message' => 'Course soft deleted successfully with id ' . $course->id], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);

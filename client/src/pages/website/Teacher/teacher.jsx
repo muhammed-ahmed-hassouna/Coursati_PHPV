@@ -13,7 +13,7 @@ const Teacher = ({
   handleUploadClick,
   handleDeleteCard,
   handleEditClick,
-}) => {  
+}) => {
   return (
     <div>
       <div className="p-20 w-full flex">
@@ -60,9 +60,22 @@ const Teacher = ({
       </div>
       <hr className="border border-black w-full mt-2" />
       <div className="flex flex-row flex-wrap gap-10 justify-center my-10">
-        {data?.course?.map((card, index) => (
+        {data?.data?.map((card, index) => (
           <div key={card?.id}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card
+              sx={{
+                opacity: 50,
+                maxWidth: 345,
+                height: 400,
+                m: 1,
+                border: "1px solid black",
+                borderRadius: "8px",
+                transition: "background-color 0.7s, border-color 0.7s",
+                "&:hover": {
+                  borderColor: "#fbbf24",
+                },
+              }}
+            >
               <CardMedia
                 className="h-56 object-cover"
                 component="img"
@@ -81,7 +94,7 @@ const Teacher = ({
                     <p className="text-sm rounded-lg flex items-center">
                       Start:{" "}
                       {card?.startDate
-                        ? new Date(card.startDate).toISOString().split("T")[0]
+                        ? new Date(card.startDate).toLocaleDateString("en-CA")
                         : ""}
                       <FiCalendar className="ml-2" />
                     </p>
@@ -90,7 +103,7 @@ const Teacher = ({
                     <span className="text-sm rounded-lg flex items-center">
                       End:{" "}
                       {card?.endDate
-                        ? new Date(card?.endDate).toISOString().split("T")[0]
+                        ? new Date(card.endDate).toLocaleDateString("en-CA")
                         : ""}
                       <FiCalendar className="ml-2" />
                     </span>

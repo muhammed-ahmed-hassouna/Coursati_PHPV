@@ -1,7 +1,6 @@
 import { FiArrowRight, FiCalendar } from "react-icons/fi";
 
 const Details = ({ onCancel, data }) => {
-  console.log("data", data);
   return (
     <>
       <div className="p-20 flex flex-col">
@@ -33,7 +32,7 @@ const Details = ({ onCancel, data }) => {
               <p className="text-sm bg-[#fbbf24] rounded-lg w-fit p-1 flex items-center">
                 Start:{" "}
                 {data?.startDate
-                  ? new Date(data?.startDate).toISOString().split("T")[0]
+                  ? new Date(data?.startDate).toLocaleDateString("en-CA")
                   : ""}
                 <FiCalendar className="ml-2" />
               </p>
@@ -42,7 +41,7 @@ const Details = ({ onCancel, data }) => {
               <p className="text-sm bg-[#fbbf24] rounded-lg w-fit p-1 flex items-center">
                 End:{" "}
                 {data?.endDate
-                  ? new Date(data?.endDate).toISOString().split("T")[0]
+                  ? new Date(data?.endDate).toLocaleDateString("en-CA")
                   : ""}
                 <FiCalendar className="ml-2" />
               </p>

@@ -27,8 +27,6 @@ const Login = () => {
       const { access_token, role, userID } = data || {};
       Cookies.set("userData", JSON.stringify({ access_token, role, userID }));
       setIsLog(true);
-
-      console.log(role);
       
       if (role === "Teacher") {
         navigate("/Teacher");

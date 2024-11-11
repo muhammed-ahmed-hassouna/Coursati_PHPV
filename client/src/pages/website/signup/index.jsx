@@ -54,7 +54,6 @@ const SignUp = () => {
       },
       validationSchema: signUpSchema,
       onSubmit: (values) => {
-        console.log("Form Values:", values);
         mutation.mutate(values);
       },
     });

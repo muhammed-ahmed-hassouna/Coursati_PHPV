@@ -32,6 +32,11 @@ class Courses extends Model
         }
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+    
     protected static function getCourseByTeacherId($id)
     {
         try {
@@ -70,14 +75,5 @@ class Courses extends Model
     protected static function softDeleteCourse($course)
     {
         return $course->delete();;
-    }
-    
-    protected static function test()
-    {
-        try {
-            return;
-        } catch (Exception $e) {
-            throw $e;
-        }
     }
 }

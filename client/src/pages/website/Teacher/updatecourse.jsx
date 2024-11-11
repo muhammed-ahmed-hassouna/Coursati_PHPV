@@ -24,10 +24,10 @@ const UpdateCourse = ({ data, onCancel, onSave }) => {
       course_name: data?.course_name || "",
       description: data?.description || "",
       startDate: data?.startDate
-        ? new Date(data.startDate).toISOString().split("T")[0]
+        ? new Date(data.startDate).toLocaleDateString("en-CA")
         : "",
       endDate: data?.endDate
-        ? new Date(data.endDate).toISOString().split("T")[0]
+        ? new Date(data.endDate).toLocaleDateString("en-CA")
         : "",
       image: data?.image || "",
       video: data?.video || "",

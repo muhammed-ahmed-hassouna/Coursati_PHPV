@@ -151,8 +151,7 @@ const Student = ({
                         Start:{" "}
                         {course?.startDate
                           ? new Date(course.startDate)
-                              .toISOString()
-                              .split("T")[0]
+                          .toLocaleDateString("en-CA")
                           : ""}
                         <FiCalendar className="ml-2" />
                       </p>
@@ -162,8 +161,7 @@ const Student = ({
                         End:{" "}
                         {course?.endDate
                           ? new Date(course?.endDate)
-                              .toISOString()
-                              .split("T")[0]
+                          .toLocaleDateString("en-CA")
                           : ""}
                         <FiCalendar className="ml-2" />
                       </span>

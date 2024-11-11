@@ -29,8 +29,9 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'User added Successfully',
-                'user' => $validatedData,
-                'token' => $token,
+                'userID' => $user->id,
+                'role' => $user->role,
+                'access_token' => $token,
             ], 201);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
@@ -38,14 +39,17 @@ class AuthController extends Controller
         }
     }
 
-    function login(Request $req) {
+    function login(Request $req)
+    {
         try {
             $validatedData = $req->validate([
                 'email' => 'required|string|email|max:40',
                 'password' => 'required|string|max:20',
             ]);
 
-            $user = User::checkEmail($req->email);
+            $email = $validatedData['email'];
+
+            $user = User::checkEmail($email);
             if (!$user || !User::checkPassword($req->password, $user->password)) {
                 return response()->json(['message' => 'Invalid Email or Password'], 400);
             }
@@ -53,8 +57,9 @@ class AuthController extends Controller
             $token = $user->createToken('token', ['*'], now()->addHours(6))->plainTextToken;
             return response()->json([
                 'message' => 'Logged In Successfully !',
-                'user' => $validatedData,
-                'token' => $token,
+                'userID' => $user->id,
+                'role' => $user->role,
+                'access_token' => $token,
             ], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());

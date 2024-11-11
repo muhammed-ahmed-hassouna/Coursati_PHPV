@@ -11,11 +11,12 @@ const useAuthProvider = () => {
   const userData = getUserCookies();
 
   useEffect(() => {
-    const isUserAuthorized = ((userData?.role === 'Teacher' || userData?.role === 'Student') && isLog);
+    const isUserAuthorized =
+      (userData?.role === "Teacher" || userData?.role === "Student") && isLog;
     const loadingDelay = setTimeout(() => {
       if (!isUserAuthorized) {
-        console.log('sadasdwqw2113');
-        
+        ("sadasdwqw2113");
+
         deleteUserCookies();
         navigate("/unauthorized", { replace: true });
       }

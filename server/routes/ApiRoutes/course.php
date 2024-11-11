@@ -3,6 +3,7 @@
 use App\Http\Controllers\Courses\CourseController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::prefix('course')->middleware(['auth:sanctum'])->group(function () {
     // Routes for Both
     Route::middleware(['role:Teacher,Student'])->group(function () {
@@ -15,6 +16,5 @@ Route::prefix('course')->middleware(['auth:sanctum'])->group(function () {
         Route::post('/createCourse', [CourseController::class, 'createCourse']);
         Route::patch('/updateCourse/{id}', [CourseController::class, 'updateCourse']);
         Route::delete('/DeleteCourse/{id}', [CourseController::class, 'softDeleteCourse']);
-        Route::post('/uploadFile', [CourseController::class, 'uploadFile']);
     });
 });
