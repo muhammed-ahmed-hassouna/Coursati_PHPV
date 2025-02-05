@@ -35,8 +35,11 @@ class AuthController extends Controller
             ], 201);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to register',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 
     function login(Request $req)
@@ -63,7 +66,10 @@ class AuthController extends Controller
             ], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to login',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 }

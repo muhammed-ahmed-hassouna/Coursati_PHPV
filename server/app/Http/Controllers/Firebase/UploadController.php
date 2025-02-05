@@ -30,7 +30,11 @@ class UploadController extends Controller
 
             return response()->json(['fileUrl' => $fileUrl], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Failed to upload file', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to upload file',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);
         }
     }
 }

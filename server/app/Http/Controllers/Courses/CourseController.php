@@ -20,7 +20,7 @@ class CourseController extends Controller
         try {
             $courses = Cache::remember('all_courses', 60, function () {
                 return Courses::with(['teacher' => function ($query) {
-                    $query->select('id', 'username'); 
+                    $query->select('id', 'username');
                 }])->get()->toArray();
             });
 
@@ -29,7 +29,11 @@ class CourseController extends Controller
             return response()->json(['data' => $courses], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to get courses',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);
         }
     }
 
@@ -44,8 +48,11 @@ class CourseController extends Controller
             return response()->json(['data' => $courses], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to get course by id',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 
     function createCourse(Request $req)
@@ -66,8 +73,11 @@ class CourseController extends Controller
             return response()->json(['data' => $course], 201);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to create course',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 
     function updateCourse(Request $req, $courseId)
@@ -89,8 +99,11 @@ class CourseController extends Controller
             return response()->json(['data' => $updatedCourse], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to update courses',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 
     public function softDeleteCourse($courseId)
@@ -103,7 +116,10 @@ class CourseController extends Controller
             return response()->json(['message' => 'Course soft deleted successfully with id ' . $course->id], 200);
         } catch (Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
-        }
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to delete courses',
+                'message' => config('app.debug') ? $e->getMessage() : 'Internal Server Error'
+            ], 500);        }
     }
 }
